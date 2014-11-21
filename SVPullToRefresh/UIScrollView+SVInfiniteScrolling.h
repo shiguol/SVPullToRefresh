@@ -21,7 +21,6 @@
 
 @end
 
-
 enum {
 	SVInfiniteScrollingStateStopped = 0,
     SVInfiniteScrollingStateTriggered,
