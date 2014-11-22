@@ -15,10 +15,14 @@
 @synthesize window = _window;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [[SVViewController alloc] initWithNibName:@"SVViewController" bundle:nil];
-    [self.window makeKeyAndVisible];
-    return YES;
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+  
+  UIViewController *vc = [[SVViewController alloc] initWithNibName:@"SVViewController" bundle:nil];
+  vc.title = @"SVPullToRefresh";
+  UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+  self.window.rootViewController = nav;
+  [self.window makeKeyAndVisible];
+  return YES;
 }
 
 @end

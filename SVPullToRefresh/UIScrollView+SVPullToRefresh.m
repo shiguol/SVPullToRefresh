@@ -17,16 +17,12 @@
 static CGFloat const SVPullToRefreshViewHeight = 60;
 static CGFloat const SVPullToRefreshViewImageHeight = 40;
 
-@interface SVPullToRefreshArrow : UIView
-
-@property (nonatomic, strong) UIColor *arrowColor;
-
-@end
-
 @interface SVPullToRefreshView ()
 
 @property (nonatomic, copy) void (^pullToRefreshActionHandler)(void);
 
+@property (nonatomic, strong, readwrite) UILabel *titleLabel;
+@property (nonatomic, strong) NSMutableArray *titles;
 @property (nonatomic, readwrite) SVPullToRefreshState state;
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, readwrite) CGFloat originalTopInset;
@@ -127,6 +123,7 @@ static char UIScrollViewPullToRefreshView;
 @synthesize pullToRefreshActionHandler;
 
 @synthesize state = _state;
+@synthesize titleLabel = _titleLabel;
 @synthesize scrollView = _scrollView;
 @synthesize showsPullToRefresh = _showsPullToRefresh;
 
@@ -137,6 +134,11 @@ static char UIScrollViewPullToRefreshView;
     self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.state = SVPullToRefreshStateStopped;
     self.wasTriggeredByUser = YES;
+    self.textColor = [UIColor darkGrayColor];
+    self.titles = [NSMutableArray arrayWithObjects:NSLocalizedString(@"Pull to refresh...",),
+                   NSLocalizedString(@"Release to refresh...",),
+                   NSLocalizedString(@"Loading...",),
+                   nil];
     [self initLoadingViews];
   }
   
@@ -364,6 +366,43 @@ static char UIScrollViewPullToRefreshView;
   maskLayer.frame = self.imageView.bounds;
   maskLayer.contentsScale = [UIScreen mainScreen].scale;
   self.imageView.layer.mask = maskLayer;
+  
+  self.titleLabel.text = [self.titles objectAtIndex:self.state];
+  self.titleLabel.frame = CGRectMake(0, SVPullToRefreshViewHeight - 40, self.bounds.size.width, SVPullToRefreshViewHeight);
+}
+
+- (UILabel *)titleLabel {
+  if(!_titleLabel) {
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 210, 20)];
+    _titleLabel.text = NSLocalizedString(@"Pull to refresh...",);
+    _titleLabel.font = [UIFont boldSystemFontOfSize:14];
+    _titleLabel.backgroundColor = [UIColor clearColor];
+    _titleLabel.textColor = _textColor;
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:_titleLabel];
+  }
+  return _titleLabel;
+}
+
+- (void)setTitle:(NSString *)title forState:(SVPullToRefreshState)state
+{
+  if(!title)
+  {
+    title = @"";
+  }
+  
+  if(state == SVPullToRefreshStateAll)
+  {
+    [self.titles replaceObjectsInRange:NSMakeRange(0, 3)
+                  withObjectsFromArray:@[title, title, title]];
+  }
+  else
+  {
+    [self.titles replaceObjectAtIndex:state
+                           withObject:title];
+  }
+  
+  [self setNeedsLayout];
 }
 
 @end

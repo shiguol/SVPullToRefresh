@@ -32,10 +32,11 @@ typedef NS_ENUM(NSUInteger, SVPullToRefreshState) {
 @interface SVPullToRefreshView : UIView
 
 @property (nonatomic, strong) UIImageView* imageView;
-@property (nonatomic, strong) NSArray* leftImageViews;
-@property (nonatomic, strong) NSArray* rightImageViews;
-
+@property (nonatomic, strong) UIColor *textColor;
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
 @property (nonatomic, readonly) SVPullToRefreshState state;
+
+- (void)setTitle:(NSString *)title forState:(SVPullToRefreshState)state;
 
 - (void)startAnimating;
 - (void)stopAnimating;
