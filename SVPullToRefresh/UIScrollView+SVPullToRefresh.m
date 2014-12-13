@@ -14,7 +14,7 @@
 #define fequal(a,b) (fabs((a) - (b)) < FLT_EPSILON)
 #define fequalzero(a) (fabs(a) < FLT_EPSILON)
 
-static CGFloat const SVPullToRefreshViewHeight = 60;
+static CGFloat const SVPullToRefreshViewHeight = 60 - 20;
 static CGFloat const SVPullToRefreshViewImageHeight = 40;
 
 @interface SVPullToRefreshView ()
@@ -349,7 +349,7 @@ static char UIScrollViewPullToRefreshView;
 // percent is zoom
 - (void)updateImageViewWithPercent:(CGFloat)percent
 {
-  self.imageView.center = CGPointMake(self.frame.size.width/2,
+  self.imageView.center = CGPointMake(self.frame.size.width/2 - 55,
                                       self.frame.size.height/2);
   
   CAShapeLayer* maskLayer = [CAShapeLayer layer];
@@ -374,7 +374,7 @@ static char UIScrollViewPullToRefreshView;
 - (UILabel *)titleLabel {
   if(!_titleLabel) {
     _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 210, 20)];
-    _titleLabel.text = NSLocalizedString(@"Pull to refresh...",);
+    _titleLabel.text = NSLocalizedString(@" ",);
     _titleLabel.font = [UIFont boldSystemFontOfSize:14];
     _titleLabel.backgroundColor = [UIColor clearColor];
     _titleLabel.textColor = _textColor;
